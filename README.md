@@ -6,15 +6,17 @@ If you are running a cluster in Google Container Engine (GKE), instead see the [
 
 ##### Table of Contents
 
- * [Step Zero: Prerequisites](#step-zero)
- * [Step One: Create the Redis master pod](#step-one)
- * [Step Two: Create the Redis master service](#step-two)
- * [Step Three: Create the Redis replica pods](#step-three)
- * [Step Four: Create the Redis replica service](#step-four)
- * [Step Five: Create the guestbook pods](#step-five)
- * [Step Six: Create the guestbook service](#step-six)
- * [Step Seven: View the guestbook](#step-seven)
- * [Step Eight: Cleanup](#step-eight)
+- [Guestbook Example](#guestbook-example)
+      - [Table of Contents](#table-of-contents)
+  - [Step Zero: Prerequisites ](#step-zero-prerequisites-)
+  - [Step One: Create the Redis master pod](#step-one-create-the-redis-master-pod)
+  - [Step Two: Create the Redis master service ](#step-two-create-the-redis-master-service-)
+  - [Step Three: Create the Redis replica pods ](#step-three-create-the-redis-replica-pods-)
+  - [Step Four: Create the Redis replica service ](#step-four-create-the-redis-replica-service-)
+  - [Step Five: Create the guestbook pods ](#step-five-create-the-guestbook-pods-)
+  - [Step Six: Create the guestbook service ](#step-six-create-the-guestbook-service-)
+  - [Step Seven: View the guestbook ](#step-seven-view-the-guestbook-)
+  - [Step Eight: Cleanup ](#step-eight-cleanup-)
 
 ### Step Zero: Prerequisites <a id="step-zero"></a>
 
@@ -24,19 +26,19 @@ This example assumes that you have a working cluster. See the [Getting Started G
 
 ### Step One: Create the Redis master pod<a id="step-one"></a>
 
-Use the `examples/guestbook-go/redis-master-controller.yaml` file to create a [replication controller](https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/) and Redis master [pod](https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/). The pod runs a Redis key-value server in a container. Using a replication controller is the preferred way to launch long-running pods, even for 1 replica, so that the pod benefits from the self-healing mechanism in Kubernetes (keeps the pods alive).
+Use the `guestbook-go/k8s/redis-master/redis-master-deploy.yaml` file to create a [deplpoyment]. The pod runs a Redis key-value server in a container. Using a deployment is the preferred way to launch long-running pods, even for 1 replica, so that the pod benefits from the self-healing mechanism in Kubernetes (keeps the pods alive).
 
-1. Use the [redis-master-controller.yaml](redis-master-controller.yaml) file to create the Redis master replication controller in your Kubernetes cluster by running the `kubectl create -f` *`filename`* command:
+1. Use the [redis-master-deploy.yaml](redis-master-deploy.yaml) file to create the Redis master replication controller in your Kubernetes cluster by running the `kubectl create -f` *`filename`* command:
 
     ```console
-    $ kubectl create -f examples/guestbook-go/redis-master-controller.yaml
+    $ kubectl create -f guestbook-go/k8s/redis-master/redis-master-deploy.yaml
    
     ```
 
-2. To verify that the redis-master controller is up, list the replication controllers you created in the cluster with the `kubectl get rc` command(if you don't specify a `--namespace`, the `default` namespace will be used. The same below):
+2. To verify that the redis-master deployment is up, list the deployment you created in the cluster with the `kubectl get deploy` command(if you don't specify a `--namespace`, the `default` namespace will be used. The same below):
 
     ```console
-    $ kubectl get rc
+    $ kubectl get deploy
     CONTROLLER             CONTAINER(S)            IMAGE(S)                    SELECTOR                         REPLICAS
     redis-master           redis-master            gurpartap/redis             app=redis,role=master            1
     ...
